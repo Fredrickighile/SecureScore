@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Reports (don't commit user data)
+reports/*.pdf
+reports/*.json
+
+# Logs
+logs/*.log
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
