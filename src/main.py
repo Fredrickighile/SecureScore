@@ -308,7 +308,9 @@ class SecureScore:
             print(f"[+] PDF report saved: {pdf_path.name}")
             
         except Exception as e:
+            import traceback
             print(f"[!] PDF generation failed: {str(e)}")
+            print(f"[!] Full error: {traceback.format_exc()}")
             print("[!] JSON report still available")
 
 def main():

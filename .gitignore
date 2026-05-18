@@ -1,25 +1,27 @@
 # Python
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
+*.pyo
+.env
 venv/
 env/
-ENV/
+*.egg-info/
 
-# Reports (don't commit user data)
-reports/*.pdf
+# Reports (don't commit scan data)
 reports/*.json
+reports/*.pdf
 
-# Logs
-logs/*.log
+# Node
+node_modules/
+build/
+.env.local
+.env.production
 
-# Environment
-.env
+# OS
+.DS_Store
+Thumbs.db
 
 # IDE
 .vscode/
 .idea/
 *.swp
-.DS_Store

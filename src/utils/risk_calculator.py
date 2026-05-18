@@ -49,13 +49,14 @@ class RiskCalculator:
         )
         
         return {
-            "total_risk_score": total_risk,
+            "total_risk_score": min(100, total_risk),
             "risk_level": risk_level,
             "color": color,
             "total_vulnerabilities": len(all_vulnerabilities),
             "critical_count": sum(1 for v in all_vulnerabilities if v.get('severity') == 'CRITICAL'),
             "high_count": sum(1 for v in all_vulnerabilities if v.get('severity') == 'HIGH'),
             "medium_count": sum(1 for v in all_vulnerabilities if v.get('severity') == 'MEDIUM'),
+            "low_count": sum(1 for v in all_vulnerabilities if v.get('severity') == 'LOW'),
             "vulnerabilities": sorted_vulns,
             "recommendations": RiskCalculator._get_top_recommendations(sorted_vulns)
         }

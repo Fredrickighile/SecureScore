@@ -42,7 +42,7 @@ class EmailScanner:
             results["vulnerabilities"].append(dmarc_result["vulnerability"])
             results["risk_score"] += dmarc_result["vulnerability"]["risk_points"]
         
-        print(f"[✓] Email security check complete. Found {len(results['vulnerabilities'])} issues")
+        print(f"[+] Email security check complete. Found {len(results['vulnerabilities'])} issues")
         return results
     
     def _check_spf(self, domain: str) -> Dict:
@@ -65,6 +65,9 @@ class EmailScanner:
                     "type": "missing_spf",
                     "severity": "MEDIUM",
                     "description": "No SPF record found",
+                    "mitre_attack": "T1566.001",
+                    "mitre_tactic": "Initial Access",
+                    "mitre_url": "https://attack.mitre.org/techniques/T1566/001/",
                     "impact": "Attackers can spoof emails from your domain",
                     "recommendation": "Add SPF record: 'v=spf1 include:_spf.google.com ~all' (adjust for your email provider)",
                     "risk_points": 8
@@ -80,6 +83,9 @@ class EmailScanner:
                     "type": "missing_spf",
                     "severity": "MEDIUM",
                     "description": "No SPF record configured",
+                    "mitre_attack": "T1566.001",
+                    "mitre_tactic": "Initial Access",
+                    "mitre_url": "https://attack.mitre.org/techniques/T1566/001/",
                     "impact": "Email spoofing possible",
                     "recommendation": "Configure SPF record in DNS",
                     "risk_points": 8
@@ -123,6 +129,9 @@ class EmailScanner:
                     "type": "missing_dmarc",
                     "severity": "HIGH",
                     "description": "No DMARC record found",
+                    "mitre_attack": "T1566.001",
+                    "mitre_tactic": "Initial Access",
+                    "mitre_url": "https://attack.mitre.org/techniques/T1566/001/",
                     "impact": "No policy for handling failed email authentication - phishing attacks easier",
                     "recommendation": "Add DMARC record: 'v=DMARC1; p=quarantine; rua=mailto:admin@yourdomain.com'",
                     "risk_points": 10
@@ -136,6 +145,9 @@ class EmailScanner:
                     "type": "missing_dmarc",
                     "severity": "HIGH",
                     "description": "No DMARC record configured",
+                    "mitre_attack": "T1566.001",
+                    "mitre_tactic": "Initial Access",
+                    "mitre_url": "https://attack.mitre.org/techniques/T1566/001/",
                     "impact": "Domain vulnerable to email spoofing and phishing",
                     "recommendation": "Configure DMARC record in DNS",
                     "risk_points": 10

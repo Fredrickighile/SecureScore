@@ -57,7 +57,7 @@ class WebAppScanner:
             results["vulnerabilities"].extend(config_result["vulnerabilities"])
             results["risk_score"] += config_result["risk_score"]
             
-            print(f"[✓] Web application scan complete. Found {len(results['vulnerabilities'])} issues")
+            print(f"[+] Web application scan complete. Found {len(results['vulnerabilities'])} issues")
             
         except requests.exceptions.RequestException as e:
             results["error"] = f"Connection failed: {str(e)}"
@@ -187,6 +187,9 @@ class WebAppScanner:
                 if re.search(r'\d+\.\d+', server):
                     result["vulnerabilities"].append({
                         "type": "server_version_disclosure",
+                    "mitre_attack": "T1592",
+                    "mitre_tactic": "Reconnaissance",
+                    "mitre_url": "https://attack.mitre.org/techniques/T1592/",
                         "severity": "LOW",
                         "description": f"Server version disclosed: {server}",
                         "impact": "Attackers can target known vulnerabilities for this version",
@@ -226,6 +229,9 @@ class WebAppScanner:
                     if test_response.status_code == 200:
                         result["vulnerabilities"].append({
                             "type": "exposed_sensitive_file",
+                        "mitre_attack": "T1083",
+                        "mitre_tactic": "Discovery",
+                        "mitre_url": "https://attack.mitre.org/techniques/T1083/",
                             "severity": "HIGH",
                             "description": f"Sensitive file exposed: {backup_file}",
                             "impact": "Configuration files or source code accessible to attackers",
@@ -256,6 +262,9 @@ class WebAppScanner:
             if 'Index of /' in response.text or '<title>Directory Listing' in response.text:
                 result["vulnerabilities"].append({
                     "type": "directory_listing",
+                    "mitre_attack": "T1083",
+                    "mitre_tactic": "Discovery",
+                    "mitre_url": "https://attack.mitre.org/techniques/T1083/",
                     "severity": "MEDIUM",
                     "description": "Directory listing enabled",
                     "impact": "Attackers can browse server directories and discover sensitive files",

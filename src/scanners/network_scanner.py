@@ -69,7 +69,7 @@ class NetworkScanner:
                             results["vulnerabilities"].append(vuln)
                             results["risk_score"] += vuln["risk_points"]
             
-            print(f"[✓] Scan complete. Found {len(results['open_ports'])} open ports")
+            print(f"[+] Scan complete. Found {len(results['open_ports'])} open ports")
             return results
             
         except Exception as e:
@@ -92,7 +92,10 @@ class NetworkScanner:
                 "port": port,
                 "description": "Remote Desktop Protocol (RDP) exposed to internet",
                 "impact": "Primary entry point for ransomware attacks",
-                "recommendation": "Close port 3389 or implement VPN access only",
+                "recommendation": "Close port 3389 or restrict to VPN-only access",
+                "mitre_attack": "T1021.001",
+                "mitre_tactic": "Lateral Movement",
+                "mitre_url": "https://attack.mitre.org/techniques/T1021/001/",
                 "risk_points": Config.RISK_WEIGHTS["exposed_rdp"]
             }
         
@@ -104,7 +107,10 @@ class NetworkScanner:
                 "port": port,
                 "description": "Server Message Block (SMB) exposed to internet",
                 "impact": "Used by WannaCry and other ransomware for lateral movement",
-                "recommendation": "Block port 445 at firewall level",
+                "recommendation": "Block port 445 at firewall level immediately",
+                "mitre_attack": "T1021.002",
+                "mitre_tactic": "Lateral Movement",
+                "mitre_url": "https://attack.mitre.org/techniques/T1021/002/",
                 "risk_points": Config.RISK_WEIGHTS["exposed_smb"]
             }
         
@@ -115,6 +121,9 @@ class NetworkScanner:
                 "type": "open_database_port",
                 "severity": "HIGH",
                 "port": port,
+                "mitre_attack": "T1190",
+                "mitre_tactic": "Initial Access",
+                "mitre_url": "https://attack.mitre.org/techniques/T1190/",
                 "description": f"{db_names.get(port, 'Database')} port exposed to internet",
                 "impact": "Direct access to database could lead to data breach",
                 "recommendation": f"Restrict {db_names.get(port, 'database')} access to localhost or VPN only",
@@ -127,6 +136,9 @@ class NetworkScanner:
                 "type": "telnet_exposed",
                 "severity": "HIGH",
                 "port": port,
+                "mitre_attack": "T1021",
+                "mitre_tactic": "Lateral Movement",
+                "mitre_url": "https://attack.mitre.org/techniques/T1021/",
                 "description": "Telnet service running (unencrypted)",
                 "impact": "Credentials transmitted in plaintext, easily intercepted",
                 "recommendation": "Disable Telnet, use SSH (port 22) instead",
@@ -139,6 +151,9 @@ class NetworkScanner:
                 "type": "ftp_exposed",
                 "severity": "MEDIUM",
                 "port": port,
+                "mitre_attack": "T1071.002",
+                "mitre_tactic": "Command and Control",
+                "mitre_url": "https://attack.mitre.org/techniques/T1071/002/",
                 "description": "FTP service exposed (unencrypted)",
                 "impact": "File transfers not encrypted, credentials at risk",
                 "recommendation": "Use SFTP (port 22) or FTPS instead",

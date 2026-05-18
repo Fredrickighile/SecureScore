@@ -59,6 +59,9 @@ class SSLScanner:
                         results["vulnerabilities"].append({
                             "type": "expired_cert",
                             "severity": "CRITICAL",
+                            "mitre_attack": "T1573",
+                            "mitre_tactic": "Command and Control",
+                            "mitre_url": "https://attack.mitre.org/techniques/T1573/",
                             "description": "SSL certificate has EXPIRED",
                             "impact": "Browser warnings, connection refused, loss of customer trust",
                             "recommendation": "Renew SSL certificate immediately",
@@ -70,6 +73,9 @@ class SSLScanner:
                         results["vulnerabilities"].append({
                             "type": "expiring_soon",
                             "severity": "HIGH",
+                            "mitre_attack": "T1573",
+                            "mitre_tactic": "Command and Control",
+                            "mitre_url": "https://attack.mitre.org/techniques/T1573/",
                             "description": f"SSL certificate expires in {days_until_expiry} days",
                             "impact": "Potential service disruption if not renewed",
                             "recommendation": "Renew SSL certificate within next 7 days",
@@ -85,6 +91,9 @@ class SSLScanner:
                         results["vulnerabilities"].append({
                             "type": "weak_ssl",
                             "severity": "HIGH",
+                            "mitre_attack": "T1040",
+                            "mitre_tactic": "Credential Access",
+                            "mitre_url": "https://attack.mitre.org/techniques/T1040/",
                             "description": f"Outdated protocol: {protocol}",
                             "impact": "Vulnerable to POODLE, BEAST attacks",
                             "recommendation": "Upgrade to TLS 1.2 or TLS 1.3",
@@ -93,12 +102,15 @@ class SSLScanner:
                         results["risk_score"] += 15
                     
                     results["certificate_valid"] = True
-                    print(f"[✓] SSL check complete. Expires in {days_until_expiry} days")
+                    print(f"[+] SSL check complete. Expires in {days_until_expiry} days")
                     
         except ssl.SSLError as e:
             results["vulnerabilities"].append({
                 "type": "ssl_error",
                 "severity": "CRITICAL",
+                "mitre_attack": "T1573",
+                "mitre_tactic": "Command and Control",
+                "mitre_url": "https://attack.mitre.org/techniques/T1573/",
                 "description": f"SSL Error: {str(e)}",
                 "impact": "Cannot establish secure connection",
                 "recommendation": "Fix SSL configuration",
