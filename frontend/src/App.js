@@ -377,7 +377,10 @@ export default function App() {
     setHistLoad(true);
     try {
       const d = await apiFetch(`${API}/api/reports`).then((r) => r.json());
-      setHistory(Array.isArray(d) ? d : []);
+      const all = Array.isArray(d) ? d : [];
+      // Only show scans from last 2 hours for privacy
+      const cutoff = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString();
+      setHistory(all.filter((r) => r.scan_time && r.scan_time > cutoff));
     } catch (_) {
       setHistory([]);
     } finally {
