@@ -16,7 +16,6 @@ import {
   FileText,
   Zap,
   BarChart2,
-  Trash2,
   RefreshCw,
 } from "lucide-react";
 import "./App.css";
