@@ -424,32 +424,44 @@ export default function App() {
   };
 
   const downloadPDF = async (filename) => {
-    if (filename) {
-      window.open(`${API}/api/download-pdf/${filename}`, "_blank");
-      return;
-    }
     try {
-      const data = await apiFetch(`${API}/api/reports`).then((r) => r.json());
-      const reports = Array.isArray(data) ? data : [];
-      const clean = (t) =>
-        (t || "")
-          .replace(/^https?:\/\//, "")
-          .replace(/\/$/, "")
-          .toLowerCase();
-      const cur = clean(results?.target);
-      const report =
-        reports.find((r) => clean(r.target) === cur) ||
-        reports.find(
-          (r) => clean(r.target).includes(cur) || cur.includes(clean(r.target)),
-        ) ||
-        reports[0];
-      if (report?.pdf_filename) {
-        window.open(`${API}/api/download-pdf/${report.pdf_filename}`, "_blank");
-      } else {
+      let pdfFilename = filename;
+      if (!pdfFilename) {
+        const data = await apiFetch(`${API}/api/reports`).then((r) => r.json());
+        const reports = Array.isArray(data) ? data : [];
+        const clean = (t) =>
+          (t || "")
+            .replace(/^https?:\/\//, "")
+            .replace(/\/$/, "")
+            .toLowerCase();
+        const cur = clean(results?.target);
+        const report =
+          reports.find((r) => clean(r.target) === cur) ||
+          reports.find(
+            (r) =>
+              clean(r.target).includes(cur) || cur.includes(clean(r.target)),
+          ) ||
+          reports[0];
+        pdfFilename = report?.pdf_filename;
+      }
+      if (!pdfFilename) {
         alert(
           "PDF still generating — wait 10 seconds after scan and try again.",
         );
+        return;
       }
+      // Fetch with API key header then trigger download
+      const res = await apiFetch(`${API}/api/download-pdf/${pdfFilename}`);
+      if (!res.ok) throw new Error("Download failed");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = pdfFilename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     } catch (e) {
       alert("Failed: " + e.message);
     }
