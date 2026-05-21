@@ -540,7 +540,7 @@ export default function App() {
                     type="text"
                     value={target}
                     onChange={(e) => setTarget(e.target.value)}
-                    placeholder="yourdomain.com or 192.168.1.1"
+                    placeholder="example.com (no https://)"
                     disabled={scanning}
                     onKeyDown={(e) => e.key === "Enter" && startScan()}
                   />
