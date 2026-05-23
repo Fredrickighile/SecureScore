@@ -214,3 +214,59 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--te
 .mitre-badge{font-family:'DM Mono',monospace;font-size:10px;padding:2px 8px;border-radius:4px;background:rgba(139,92,246,.12);color:#a78bfa;border:1px solid rgba(139,92,246,.25);text-decoration:none;transition:all .2s}
 .mitre-badge:hover{background:rgba(139,92,246,.25);color:#c4b5fd}
 .mitre-tactic{font-size:10px;color:var(--text3);font-family:'DM Mono',monospace}
+
+/* ── Mobile fixes ── */
+@media (max-width: 480px) {
+  .header-inner { padding: 0 1rem; height: 56px; }
+  .logo h1 { font-size: 1rem; }
+  .logo-tag { display: none; }
+  .nav-pill { display: none; }
+  .nav-tab { padding: 4px 8px; font-size: 11px; }
+
+  .main { padding: 1.5rem 0 4rem; }
+  .container { padding: 0 1rem; }
+
+  .hero h2 { font-size: 1.5rem; }
+  .hero p { font-size: 0.9rem; }
+  .hero-eyebrow { font-size: 10px; }
+
+  .scan-box { padding: 1.25rem; }
+  .input-row { flex-direction: column; gap: 0.75rem; }
+  .scan-btn { width: 100%; justify-content: center; padding: 0.85rem; }
+  .scan-input { width: 100%; font-size: 14px; }
+
+  .score-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .score-card { padding: 1.25rem; }
+
+  .gauge-wrap svg { width: 120px; height: 120px; }
+
+  .readiness-level { font-size: 1.2rem; }
+
+  .hist-stats { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .hstat-val { font-size: 1.3rem; }
+
+  .hist-table th:nth-child(3),
+  .hist-table td:nth-child(3),
+  .hist-table th:nth-child(4),
+  .hist-table td:nth-child(4) { display: none; }
+
+  .action-row { flex-direction: column; gap: 0.75rem; }
+  .dl-btn { width: 100%; justify-content: center; }
+  .reset-btn { width: 100%; text-align: center; }
+
+  .panel-header { padding: 0.9rem 1rem; }
+  .vuln-item { padding: 0.85rem 1rem; }
+  .scanner-btn { padding: 0.85rem 1rem; }
+
+  .footer-inner { flex-direction: column; text-align: center; }
+  .footer-copy { font-size: 11px; }
+
+  .progress-step { padding: 0.5rem 0; }
+  .step-name { font-size: 12px; }
+}
+
+@media (max-width: 380px) {
+  .hero h2 { font-size: 1.3rem; }
+  .score-card { padding: 1rem; }
+  .hist-stats { grid-template-columns: repeat(2, 1fr); }
+}
