@@ -446,6 +446,72 @@ export default function App() {
                     </div>
                   </div>
 
+                  {/* PIPEDA Compliance Card */}
+                  {results.pipeda_compliance && (
+                    <div className="panel pipeda-card">
+                      <div className="panel-header">
+                        <div className="panel-title">
+                          <span className="pipeda-flag">🍁</span>
+                          PIPEDA Compliance Score
+                          <span className={`badge-count ${
+                            results.pipeda_compliance.compliance_level === 'COMPLIANT' ? 'info' :
+                            results.pipeda_compliance.compliance_level === 'PARTIAL' ? 'warn' : 'danger'
+                          }`}>{results.pipeda_compliance.compliance_level}</span>
+                        </div>
+                      </div>
+                      <div className="pipeda-body">
+                        <div className="pipeda-score-row">
+                          <div className="pipeda-score-wrap">
+                            <div className="pipeda-score-num" style={{
+                              color: results.pipeda_compliance.pipeda_score >= 80 ? '#10b981' :
+                                     results.pipeda_compliance.pipeda_score >= 60 ? '#f59e0b' : '#ef4444'
+                            }}>
+                              {results.pipeda_compliance.pipeda_score}
+                              <span className="pipeda-score-total">/100</span>
+                            </div>
+                            <div className="pipeda-score-label">PIPEDA Score</div>
+                          </div>
+                          <div className="pipeda-meta">
+                            <div className="pipeda-meta-item">
+                              <span>Breach notification required</span>
+                              <span className={results.pipeda_compliance.breach_notification_required ? 'pipeda-yes-bad' : 'pipeda-no-good'}>
+                                {results.pipeda_compliance.breach_notification_required ? '⚠ Yes' : '✓ No'}
+                              </span>
+                            </div>
+                            <div className="pipeda-meta-item">
+                              <span>Breach risk</span>
+                              <span className={`pipeda-risk-${results.pipeda_compliance.reportable_breach_risk?.toLowerCase()}`}>
+                                {results.pipeda_compliance.reportable_breach_risk}
+                              </span>
+                            </div>
+                            <div className="pipeda-meta-item">
+                              <span>Violations found</span>
+                              <span>{results.pipeda_compliance.total_violations}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="pipeda-summary">{results.pipeda_compliance.summary}</div>
+                        <div className="pipeda-law">
+                          Assessed under: {results.pipeda_compliance.applicable_law}
+                        </div>
+                        {results.pipeda_compliance.violations?.length > 0 && (
+                          <div className="pipeda-violations">
+                            {results.pipeda_compliance.violations.map((v, i) => (
+                              <div key={i} className={`pipeda-violation pipeda-${v.pipeda_risk?.toLowerCase()}`}>
+                                <div className="pv-top">
+                                  <span className={`pv-badge pv-${v.pipeda_risk?.toLowerCase()}`}>{v.pipeda_risk}</span>
+                                  <span className="pv-principle">{v.pipeda_principle}</span>
+                                </div>
+                                <div className="pv-desc">{v.pipeda_description}</div>
+                                <div className="pv-breach">⚡ {v.breach_notification_risk}</div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
                   {allVulns.length > 0 && (
                     <div className="panel">
                       <div className="panel-header">

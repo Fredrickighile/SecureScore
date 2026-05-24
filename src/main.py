@@ -14,6 +14,7 @@ from src.scanners.ssl_scanner import SSLScanner
 from src.scanners.email_scanner import EmailScanner
 from src.scanners.webapp_scanner import WebAppScanner
 from src.utils.risk_calculator import RiskCalculator
+from src.utils.pipeda_calculator import PIPEDACalculator
 from src.config import Config
 
 class SecureScore:
@@ -61,7 +62,8 @@ class SecureScore:
             "email_scan": {},
             "webapp_scan": {},
             "overall_risk": {},
-            "ransomware_readiness": {}
+            "ransomware_readiness": {},
+            "pipeda_compliance": {}
         }
         
         # 1. Network Security Scan - Check for RDP/SMB exposure
@@ -104,6 +106,16 @@ class SecureScore:
         
         # Calculate Ransomware-Specific Readiness
         results["ransomware_readiness"] = self._calculate_ransomware_readiness(results)
+        
+        # Calculate PIPEDA Compliance Score
+        print("\n[*] Calculating PIPEDA compliance score...")
+        scan_results_for_pipeda = {
+            "network": results["network_scan"],
+            "ssl": results["ssl_scan"],
+            "email": results["email_scan"],
+            "webapp": results["webapp_scan"]
+        }
+        results["pipeda_compliance"] = PIPEDACalculator.calculate(scan_results_for_pipeda)
         
         # Display Results
         self._display_results(results)
@@ -308,9 +320,7 @@ class SecureScore:
             print(f"[+] PDF report saved: {pdf_path.name}")
             
         except Exception as e:
-            import traceback
             print(f"[!] PDF generation failed: {str(e)}")
-            print(f"[!] Full error: {traceback.format_exc()}")
             print("[!] JSON report still available")
 
 def main():
